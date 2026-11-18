@@ -1,0 +1,864 @@
+<html>
+    <head>
+        <title>DEMO JavaScript - Dang Hong Anh</title>
+        <style>
+            *{
+                font-family:Arial;
+            }
+            .header {
+                position:relative;
+                width:100%;
+                height:150px;
+            }
+            .logo-container{
+                position:absolute;
+            }
+            .logo img{
+                width:180px;
+                height:auto;
+                display:block;
+            }
+            .navigator {
+                position:absolute;
+                top:10px;
+                right:3%;
+                display:flex;
+                align-items:center;
+                gap:30px;
+                color:#666666;
+                font-size:15px;
+            }
+            .categories{
+                position:absolute;
+                left:2%;
+                bottom:10px;
+                display:flex;
+                align-items:center;
+                gap:32px;
+                font-size:14px;
+                color:#666666;
+            }
+            .top-categories span:last-child{
+                padding-left:32px;
+                border-left:1px solid #dddddd;
+            }
+            .main1{
+                max-width:1100px;
+                width:90%;
+                margin:30px auto 0;
+            }
+            .search-container{
+                max-width:100%;
+                width:630px;
+                height:50px;
+                border:1px solid #008f00;
+                border-radius:30px;
+                display:flex;
+                overflow:hidden;
+            }
+            .search-container input{
+                padding:0 15px;
+                border:none;
+                outline:none;
+                font-size:15px;
+                flex:1;
+            }
+            .search-container input::placeholder{
+                color:#999999;
+            }
+            .search-container button{
+                width:40px;
+                background-color:#008f00;
+                border:none;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:white;
+                cursor:pointer;
+            }
+            .search-container button:hover{
+                background-color:#006f00;
+            }
+            .breadcrumb {
+                display:flex;
+                align-items:center;
+                gap:10px;
+            }
+            .breadcrumb button{
+                background:none;
+                border:none;
+                color: #000000;
+                font-size:15px;
+                cursor:pointer;
+            }
+            .breadcrumb button:nth-child(-n+2){
+                color:#0077cc;
+                text-decoration:underline;
+                text-underline-offset:3px;
+            }
+            .title {
+                font-size:25px;
+                font-weight:bold;
+                margin-top: 18px;
+            }
+            .NA-background{
+                position:fixed;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+                background-color:rgba(0,0,0,0.4);
+                display:none;
+                justify-content:center;
+                align-items:center;
+                z-index:1000;
+            }
+            .NA-box{
+                max-width:80%;
+                width:350px;
+                padding:30px 25px;
+                background-color:white;
+                border-radius:10px;
+                text-align:center;
+            }
+            .NA-box p{
+                font-size:16px;
+                line-height:1.5;
+                margin-bottom:25px;
+            }
+            .NA-box button{
+                padding:9px 30px;
+                border:none;
+                border-radius:20px;
+                background-color:#008f00;
+                color:white;
+                font-size:15px;
+                cursor:pointer;
+            }
+            .NA-box button:hover{
+                background-color:#007500
+            }
+        /*SERVICE & SIDEBAR*/
+            .main2{
+                max-width:1100px;
+                width:90%;
+                margin:30px auto;
+                display:flex;
+                align-items:flex-start;
+                gap:18px;
+            }
+            .sidebar-layout{
+                width:25%;
+                min-width:0;
+                height:290px;
+                padding:15px 13px;
+                border:1px solid #666666;
+                border-radius:10px;
+                display:flex;
+                flex-direction:column;
+                gap:25px;
+            }
+            .sidebar-item{
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                font-size:12px;
+                color:#333333;
+            }
+            .sidebar-arrow{
+                font-size:18px;
+                color:#999999;
+            }
+            .sidebar-button{
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-top:auto;
+            }
+            .reset-text, .apply-text{
+                font-size:12px;
+                text-align:center;
+            }
+            .reset-text{
+                padding:7px 20px;
+                border:1px solid #0077cc;
+                border-radius:20px;
+                color:#0077cc;
+            }
+            .apply-text{
+                background-color:#eeeeee;
+                padding:7px 20px;
+                border-radius:20px;
+                color:#666666;
+            }
+            .service-grid{
+                flex:1;
+                display:grid;
+                grid-template-columns:repeat(3,minmax(0,1fr));
+                gap:25px 15px;
+            }
+            .service-box{
+                position:relative;
+                min-width:0;
+                background-color:#ffffff;
+                border-radius:12px;
+                box-shadow:0 3px 15px rgba(0,0,0,0.08);
+                overflow:hidden;
+                cursor:pointer;
+            }
+            .service-box img{
+                width:100%;
+                height:125px;
+                object-fit:cover;
+                display:block;
+            }
+            .badge-container{
+                position:absolute;
+                top:125px;
+                left:3px;
+                transform:translateY(-50%);
+                display:flex;
+                flex-wrap:wrap;
+                gap:4px;
+                z-index:50;
+            }
+            .experience-badge{
+                padding:5px 9px;
+                border-radius:20px;
+                color:white;
+                font-size:12px;
+                font-weight:bold;
+                white-space:nowrap;
+            }
+            .bestseller-badge{
+                background-color:#008f00;
+            }
+            .cultural-badge{
+                background-color:#e85675;
+            }
+            .instantcf-badge{
+                background-color:#777777;
+            }
+            .travelpass-badge{
+                background-color:#0077cc;
+            }
+            .service-name{
+                padding:23px 10px 15px;
+            }
+            .service-name h3{
+                font-size:18px;
+                font-weight:bold;
+                color:#222222;
+                margin-bottom:10px;
+            }
+            .service-price{
+                font-size:15px;
+                font-weight:bold;
+                color:#008f00;
+                margin-bottom:8px;
+            }
+            .service-des{
+                font-size:12px;
+                color:#666666;
+                margin-bottom:8px;
+            }
+            .service-box:hover{
+                box-shadow:0 5px 20px rgba(0,0,0,0.15);
+            }
+            .service-location{
+                font-size:12px;
+                color:#777777;
+            }
+        /*POPUP*/
+            .popup-preview{
+                position:relative;
+                width:100%;
+                height:140px;
+                background-color:#b9ead7;
+                border-radius:10px;
+                overflow:hidden;
+            }
+            #previewMap{
+                width:100%;
+                height:100%;
+                z-index:0;
+            }
+            .popup-button{
+                position:absolute;
+                bottom:33px;
+                left:50%;
+                transform:translateX(-50%);
+                background-color:#008f00;
+                padding:10px 14px;
+                border:none;
+                border-radius:5px;
+                font-size:13px;
+                color:#ffffff;
+                font-weight:bold;
+                cursor:pointer;
+                white-space:nowrap;
+                z-index:1000;
+                animation:doubleBounce 3s infinite;
+            }
+            @keyframes doubleBounce{
+                0%,20%,40%,100%{
+                    transform:translate(-50%,0);
+                }
+                10%,30%{
+                    transform:translate(-50%,-7px);
+                }
+            }
+            .popup{
+                position:fixed;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+                background-color:rgba(0,0,0,0.2);
+                display:none;
+                justify-content:center;
+                align-items:center;
+                z-index:1000;
+            }
+            .popup-box{
+                position:relative;
+                width:80vw;
+                height:80vh;
+                background-color:white;
+                border-radius:12px;
+                box-shadow:0 5px 30px #999999;
+                display:flex;
+                flex-direction:row;
+                overflow:hidden;
+            }
+            .pmap-side{
+                position:relative;
+                width:75%;
+                min-width:0;
+                height:100%;
+            }
+            #MapByExperience{
+                width:100%;
+                height:100%;
+            }
+            .pinfo-side{
+                position:relative;
+                width:25%;
+                height:100%;
+                background-color:white;
+                padding:55px 20px 20px;
+                box-sizing:border-box;
+                overflow-y:auto;
+            }
+            .pclose-button{
+                position:absolute;
+                top:12px;
+                right:18px;
+                width:36px;
+                height:16px;
+                padding:0;
+                background:none;
+                border:none;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:32px;
+                color:#555555;
+                line-height:1;
+                cursor:pointer;
+                z-index:2000;
+            }
+            #peDefault{
+                position:absolute;
+                top:50%;
+                left:0;
+                transform:translateY(-50%);
+                width:100%;
+                padding:0 15px;
+                box-sizing:border-box;
+                font-size:15px;
+                color:#777777;
+                line-height:1.7;
+                text-align:center;
+            }
+            .pE-info{
+                width:100%;
+                display:none;
+            }
+            .peTags{
+                display:flex;
+                flex-wrap:nowrap;
+                gap:8px;
+                margin-bottom:16px;
+                font-size:12px;
+                font-weight:wrap;
+                white-space:normal;
+            }
+            .peTags span{
+                display:none;
+            }
+            #peBestsellerTag{
+                color:#008f00;
+            }
+            #peCulturalTag{
+                color:#e85675;
+            }
+            #peInstantcfTag{
+                color:#888888;
+            }
+            #peTravelPassTag{
+                color:#0077cc
+            }
+            #peTitle{
+                font-size:20px;
+                color:#222222;
+                margin-bottom:20px;
+            }
+            #peDes{
+                font-size:14px;
+                color:#555555;
+                line-height:1.7;
+                margin-bottom:25px;
+            }
+            #travelPassMarkers{
+                position:absolute;
+                top:15px;
+                left:55px;
+                right:15px;
+                display:flex;
+                flex-wrap:wrap;
+                gap:8px;
+                z-index:1000;
+                pointer-events:auto;
+            }
+            .pE-details{
+                background:none;
+                padding:0;
+                border:none;
+                display:none;
+                color:#008f00;
+                font-size:14px;
+                font-weight:bold;
+                cursor:pointer;
+                transition:color 0.2s ease;
+            }
+            .pE-details.clicked{
+                color:#004d00;
+            }
+            .pE-marker{
+                background:transparent;
+                border:none;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+            }
+            .ptravel-pass-marker{
+                background-color:#0077cc;
+                padding:5px 8px;
+                border:none;
+                border-radius:4px;
+                box-shadow:0 2px 5px rgba(0,0,0,0.15);
+                color:#ffffff;
+                font-size:12px;
+                font-weight:bold;
+                white-space:nowrap;
+                cursor:pointer;
+            }
+            .pE-label{
+                background-color:#008f00;
+                padding:5px 8px;
+                border-radius:4px;
+                box-shadow:0 2px 5px rgba(0,0,0,0.15);
+                transform:translate(-50%,-50%);
+                display:inline-block;
+                color:white;
+                font-size:12px;
+                font-weight:bold;
+                text-align:center;
+                white-space:nowrap;
+                cursor:pointer;
+            }
+            .pE-label.cultural-marker{
+                background-color:#e85675;
+            }
+        </style>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    </head>
+    <body>
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="https://hwnjwxysyzodlqkblumw.supabase.co/storage/v1/object/public/LogoforDemo/LogoforDemo" alt="Website Logo">
+                </div>
+            </div>
+            <div class="navigator">
+                <span>JPY</span>
+                <span>English</span>
+                <span>Sign in</span>
+                <span>Menu</span>
+            </div>
+            <div class="categories">
+                <span>Catergories</span>
+                <span>Japan</span>
+                <span>Global</span>
+                <span>Hotels</span>
+            </div>
+        </header>
+        <main class="main1">
+            <form class="search-container" id="experienceSearchForm">
+                <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search destinations or what to do"
+                    autocomplete="off"
+                    aria-label="Search destinations or experiences"
+                >
+                <button type="submit" aria-label="Search">
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 28 28"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <!--Source: https://lucide.dev/icons/search
+                    License: MIT
+                    Modifications: dimensions, viewBox, and stroke color.
+                    Copyright (c) 2013-present Cole Bemis
+                    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+                    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+                    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+                    -->
+                </button>
+            </form>
+            <nav class="breadcrumb">
+                <button type="button" onclick="showNotification()">
+                    Home
+                </button>
+                <button type="button" onclick="showNotification()">
+                    Japan
+                </button>
+                <button 
+                    type="button"
+                    id="breadcrumbCity"
+                    onclick="showNotification()"
+                >
+                    Tokyo
+                </button>
+            </nav>
+            <h1 class="title" id="updatedTitle">
+                Things to do and Sightseeing in Tokyo (5 results)
+            </h1>
+        </main>
+        <div class="NA-background" id="NAnotification">
+            <div class="NA-box">
+                <p>I am really sorry,<br>this feature is unavailable in the demo version.</p>
+                <button type="button" onclick="closeNotification()">
+                    OK
+                </button>
+            </div>
+        </div>
+        <main class="main2">
+            <div class="sidebar-layout">
+                <div class="popup-preview">
+                    <div id="previewMap"></div>
+                    <button class="popup-button" onclick="openMapPopup()">
+                        Click to view Experiences on map
+                    </button>
+                </div>
+                <div class="sidebar-item">
+                    <span id="sidebarCity">Tokyo</span>
+                    <span class="sidebar-arrow">></span>
+                </div>
+                <div class="sidebar-item">
+                    <span>All Categories</span>
+                    <span class="sidebar-arrow">></span>
+                </div>
+                <div class="sidebar-button">
+                    <span class="reset-text">Reset</span>
+                    <span class="apply-text">Apply</span>
+                </div>
+            </div>
+            <div class="service-grid" id="serviceGrid"></div>   
+        </main>
+        <div class="popup" id="MapPopup">
+            <div class="popup-box">
+                <div class="pmap-side">
+                    <div id="MapByExperience"></div>
+                    <div id="travelPassMarkers"></div>
+                </div>
+                <div class="pinfo-side">
+                    <button class="pclose-button" onclick="closeMapPopup()">
+                        &times;
+                    </button>
+                    <div id="peDefault">
+                        Please choose one Experience to view information.
+                    </div>
+                    <div class="pE-info" id="peInfo">
+                        <h2 id="peTitle"></h2>
+                        <div class="peTags">
+                            <span id="peBestsellerTag">#bestseller</span>
+                            <span id="peCulturalTag">#cultural_experience</span>
+                            <span id="peInstantcfTag">#instant_confirmation</span>
+                            <span id="peTravelPassTag">#travel_pass</span>
+                        </div>
+                        <div id="peDes"></div>
+                        <button class="pE-details" id="pDetailsButton" onclick="changeDetailsButtonColor()"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <script>
+            const SUPABASE_URL = "https://hwnjwxysyzodlqkblumw.supabase.co";
+            const SUPABASE_KEY = "sb_publishable_xj42ea2q5QYy0fXthqddAQ_Z97ExQfg";
+            let allExperiences=[];
+            let updatedExperiences=[];
+            let searchedExperience=null;
+            let MapByExperience=null;
+            let MarkerOnMap=null;
+            const MarkerByName=new Map();
+            const DEFAULT_CENTER=[36.2,138.2];
+            const DEFAULT_ZOOM=5;
+            const cityLocations={
+                Tokyo:[35.671150,139.771955],
+                Osaka:[34.682655,135.500938],
+                Fukuoka:[33.580002,130.401712]
+            }
+            const previewMap=L.map("previewMap",{
+                dragging:false,
+                zoomControl:false,
+                scrollWheelZoom:false,
+                doubleClickZoom:false,
+                touchZoom:false
+            }).setView(cityLocations.Tokyo,11);
+            L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
+                attribution:'&copy; OpenStreetMap contributors'
+            }).addTo(previewMap);
+            function showNotification(){
+                document.getElementById("NAnotification").style.display="flex";
+            }
+            function closeNotification(){
+                document.getElementById("NAnotification").style.display="none";
+            }
+            function updateResults(city){
+                city=city.trim().toLowerCase();
+                city=city.charAt(0).toUpperCase()+city.slice(1);
+                searchedExperience=allExperiences.find(experience=>experience.name.toLowerCase()===city.toLowerCase())||null;
+                updatedExperiences=searchedExperience
+                    ?[searchedExperience]
+                    :sortedExperiences(findExperiences(city));
+                if(searchedExperience&&
+                    searchedExperience.latitude!=null&&
+                    searchedExperience.longitude!=null){
+                        previewMap.setView(
+                            [searchedExperience.latitude,searchedExperience.longitude],13
+                    );
+                }else if(cityLocations[city]){
+                    previewMap.setView(cityLocations[city],11);
+                }
+                document.getElementById("breadcrumbCity").textContent=
+                    updatedExperiences.length>0 ?updatedExperiences[0].city :"";
+                document.getElementById("updatedTitle").textContent=
+                    `${updatedExperiences.length} results for "${city}"`;
+                document.getElementById("sidebarCity").textContent=
+                    updatedExperiences.length>0 ?updatedExperiences[0].city :"";
+                renderSboxes(updatedExperiences);
+                updateMapMarkers();
+            }
+            document.getElementById("experienceSearchForm")
+                .addEventListener("submit",experience=>{
+                experience.preventDefault();
+                updateResults(document.getElementById("searchInput").value);
+            });
+            function findExperiences(city){
+                return allExperiences.filter(
+                    experience=>experience.city.toLowerCase()===city.toLowerCase()
+                );
+            }
+            async function loadExperiences(){
+                const response=await fetch(
+                    `${SUPABASE_URL}/rest/v1/experiences?select=*`,
+                    {
+                        headers:{"apikey":SUPABASE_KEY}
+                    }
+                );
+                const experiences=await response.json();
+                return experiences;
+            }
+            function sortedExperiences(experiences){
+                return experiences.slice().sort(
+                    (a,b)=>
+                    Number(b.cultural_boolean)-Number(a.cultural_boolean)
+                    ||a.name.localeCompare(b.name,undefined,{numeric:true})
+                );
+            }
+            function renderSboxes(experiences) {
+                const grid = document.getElementById("serviceGrid");
+                grid.innerHTML="";
+                experiences.forEach(experience=>{
+                    grid.innerHTML+=`
+                        <div class="service-box">
+                            <img src="${experience.image_ref}">
+                            <div class="badge-container">
+                                ${experience.bestseller_boolean
+                                    ?'<span class="experience-badge bestseller-badge">Bestseller</span>'
+                                    :''}
+                                ${experience.cultural_boolean
+                                    ?'<span class="experience-badge cultural-badge">Cultural Experience</span>'
+                                    :''}
+                                ${experience.instantcf_boolean
+                                    ?'<span class="experience-badge instantcf-badge">Instant Confirmation</span>'
+                                    :''}
+                                ${experience.travel_pass
+                                    ?'<span class="experience-badge travelpass-badge">Travel Pass</span>'
+                                    :''}
+                            </div>
+                            <div class="service-name">
+                                <h3>${experience.name}</h3>
+                                <p class="service-price">${experience.price} JPY</p>
+                                <p class="service-des">${experience.description}</p>
+                                <p class="service-location">${experience.city}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            /*"experience.image_ref" has been sourced on free images on Cava*/
+            /*POPUP*/
+            function openMapPopup(selectedExperience=null){
+                document.getElementById("MapPopup").style.display="flex";
+                initializeMapByExperience();
+                setTimeout(()=>{
+                    MapByExperience.invalidateSize();
+                    updateMapMarkers();
+                    if(selectedExperience){
+                        const marker=MarkerByName.get(selectedExperience.shortname);
+                        if(marker){
+                            MapByExperience.setView(
+                                marker.getLatLng(),
+                                Math.max(MapByExperience.getZoom(),13)
+                            );
+                        }
+                        showExperienceInformation(selectedExperience);
+                    }
+                },150);
+            }
+            function closeMapPopup(){
+                document.getElementById("MapPopup").style.display="none";
+            }
+            function initializeMapByExperience(){
+                if (MapByExperience) return;
+                MapByExperience=L.map(
+                    "MapByExperience",{
+                        zoomControl:true,
+                        scrollWheelZoom:true
+                    }
+                );
+                L.tileLayer(
+                    "https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
+                        attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                        maxZoom:19
+                    }
+                ).addTo(MapByExperience);
+                MarkerOnMap=L.featureGroup().addTo(MapByExperience);
+                MapByExperience.setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+                updateMapMarkers();
+            }
+            function updateMapMarkers(){
+                if (!MapByExperience||!MarkerOnMap) return;
+                MarkerOnMap.clearLayers();
+                MarkerByName.clear();
+                renderTravelPassMarkers();
+                updatedExperiences.forEach(experience=>{
+                    if(experience.travel_pass) return;
+                    const label=document.createElement("div");
+                    label.className=experience.cultural_boolean===true
+                        ?"pE-label cultural-marker"
+                        :"pE-label";
+                    label.textContent=experience.shortname;
+                    const icon=L.divIcon({
+                        className:"pE-marker",
+                        html:label.outerHTML,
+                        iconSize:[160,34],
+                        iconAnchor:[80,17]
+                    });
+                    const marker=L.marker(
+                        [experience.latitude, experience.longitude],
+                        {icon:icon}
+                    );
+                    marker.on("click",()=>{showExperienceInformation(experience)});
+                    marker.addTo(MarkerOnMap);
+                    MarkerByName.set(experience.shortname,marker);
+                });
+                if(MarkerOnMap.getLayers().length){
+                    MapByExperience.fitBounds(MarkerOnMap.getBounds(),{
+                    padding:[50,50],
+                    maxZoom:13
+                    });
+                }else{
+                    MapByExperience.setView(DEFAULT_CENTER,DEFAULT_ZOOM);
+                }
+                resetMap();
+            }
+            function renderTravelPassMarkers(){
+                const container=document.getElementById("travelPassMarkers");
+                container.innerHTML="";
+                const TravelPasses=updatedExperiences.filter(
+                    experience=>experience.travel_pass===true
+                );
+                TravelPasses.forEach((experience,index)=>{
+                    const button=document.createElement("button");
+                    button.type="button";
+                    button.className="ptravel-pass-marker";
+                    button.textContent=`Travel Pass ${index+1}`;
+                    button.addEventListener("click",()=>{
+                        showExperienceInformation(experience);
+                    });
+                    container.appendChild(button);
+                });
+            }
+            function resetMap(){
+                document.getElementById("peDefault").style.display="block";
+                document.getElementById("peDefault").textContent=
+                    updatedExperiences.length
+                        ?"Please choose one Experience to view information."
+                        :"No matching experiences to display.";
+                document.getElementById("peInfo").style.display="none";
+            }
+            function showExperienceInformation(experience){
+                 document.getElementById("peDefault").style.display="none";
+                 document.getElementById("peInfo").style.display="block";
+                 document.getElementById("peTitle").textContent=experience.name;
+                 document.getElementById("peBestsellerTag").style.display=
+                    experience.bestseller_boolean?"inline":"none";
+                 document.getElementById("peCulturalTag").style.display=
+                    experience.cultural_boolean?"inline":"none";
+                document.getElementById("peInstantcfTag").style.display=
+                    experience.instantcf_boolean?"inline":"none";
+                document.getElementById("peTravelPassTag").style.display=
+                    experience.travel_pass?"inline":"none";
+                document.getElementById("peDes").textContent=experience.description;
+                const viewButton=document.getElementById("pDetailsButton");
+                viewButton.textContent="View details";
+                viewButton.style.display="inline-block";
+                viewButton.classList.remove("clicked");
+            }
+            function changeDetailsButtonColor(){
+                document.getElementById("pDetailsButton")
+                    .classList.toggle("clicked");
+            }
+            async function startWebsite(){
+                allExperiences=await loadExperiences();
+                updateResults("Tokyo");
+            }
+            startWebsite();
+        </script>
+    </body>
+</html>
