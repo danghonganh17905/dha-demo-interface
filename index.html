@@ -654,14 +654,22 @@
                 updatedExperiences=searchedExperience
                     ?[searchedExperience]
                     :sortedExperiences(findExperiences(city));
-                if(searchedExperience&&
-                    searchedExperience.latitude!=null&&
-                    searchedExperience.longitude!=null){
+                if(searchedExperience){
+                    if(searchedExperience.travel_pass){
+                        const passCity=searchedExperience.city;
+                        if(cityLocations[passCity]){
+                            previewMap.setView(cityLocations[passCity],11);
+                        }
+                    }else if(
+                        searchedExperience.latitude!=null&&
+                        searchedExperience.longitude!=null)
+                    {
                         previewMap.setView(
                             [searchedExperience.latitude,searchedExperience.longitude],13
                     );
+                    }
                 }else if(cityLocations[city]){
-                    previewMap.setView(cityLocations[city],11);
+                    previewMap.setView(cityLocations[city],11;
                 }
                 document.getElementById("breadcrumbCity").textContent=
                     updatedExperiences.length>0 ?updatedExperiences[0].city :"";
@@ -797,7 +805,14 @@
                     marker.addTo(MarkerOnMap);
                     MarkerByName.set(experience.shortname,marker);
                 });
-                if(MarkerOnMap.getLayers().length){
+                if(
+                    searchedExperience&&
+                    searchedExperience.travel_pass&&
+                    cityLocations[searchedExperience.city])
+                {MapByExperience.setView(
+                    cityLocations[searchedExperience.city],11
+                );
+                }else if(MarkerOnMap.getLayers().length){
                     MapByExperience.fitBounds(MarkerOnMap.getBounds(),{
                     padding:[50,50],
                     maxZoom:13
